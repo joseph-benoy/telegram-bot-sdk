@@ -1,5 +1,5 @@
 <?php
-    namespace \Telegram\Api;
+    namespace Telegram\Api;
 /**
  * [Base class for the bot sdk]
  */
@@ -19,44 +19,27 @@
                 }
             }
         }
-        /**
-         * capture the update object sent to webhook
-         * @return void
-         */
-        public function capture():void{
-            $updateObj = file_get_contents("php://input");
-            $filterObj = filterUpdate($updateObj);
-            if(property_exists($filterObj,'queryData')){
-                //execute as callback_query
-            }
-            elseif(property_exists($filterObj,'commandName')){
-                //execute as registered command
-            }
-            else{
-                //execute as random input
-            }
-        }
-        /**
+                /**
          * filter the update object and return filter object to identify the type
          * @param mixed $updateObj
          * 
          * @return stdClass
          */
-        public function filterUpdate($updateObj):stdClass{
+        public function filterUpdate($updateObj):\stdClass{
             if(property_exists($updateObj,'callback_query')){
-                $filterObj = new stdClass;
+                $filterObj = new \stdClass;
                 $filterObj->chatId = $updateObj->callback_query->from->id;
                 $filterObj->queryData = $updateObj->callback_query->data;
                 return $filterObj;
             }
-            elseif($cmd = getCommandName($updateObj)!=null){
-                $filterObj = new stdClass;
+            elseif($cmd = $this->getCommandName($updateObj)!=null){
+                $filterObj = new \stdClass;
                 $filterObj->chatId = $updateObj->message->chat->id;
                 $filterObj->commandName = $cmd;
                 return $filterObj;
             }
             else{
-                $filterObj = new StdClass;
+                $filterObj = new \StdClass;
                 $filterObj->chatId = $updateObj->message->chat->id;
                 return $filterObj;
             }
@@ -76,5 +59,23 @@
                 return null;
             }
         }
+        /**
+         * capture the update object sent to webhook
+         * @return void
+         */
+        public function capture():void{
+            $updateObj = json_decode(file_get_contents("php://input"));
+            $filterObj = $this->filterUpdate($updateObj);
+            if(property_exists($filterObj,'queryData')){
+                //execute as callback_query
+            }
+            elseif(property_exists($filterObj,'commandName')){
+                //execute as registered command
+            }
+            else{
+                //execute as random input
+            }
+        }
     }
+
 ?> 
