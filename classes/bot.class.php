@@ -75,7 +75,7 @@
             }
         }
         protected function executeCommand($filterObj,$updateObj):void{
-            $command = new $filterObj->commandName($updateObj);
+            $command = new $filterObj->commandName($this->apiToken,$updateObj);
             $command->handle();
         }
     }

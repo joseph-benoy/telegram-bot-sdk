@@ -1,5 +1,5 @@
 <?php
-    namespace \Telegram\Api\Action;
+    namespace \Telegram\Api\Actions;
     class ReplyAction{
         protected $chatId;
         protected function __construct($filterObj){
