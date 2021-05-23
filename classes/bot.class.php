@@ -78,6 +78,13 @@
             $command = new $filterObj->commandName($this->apiToken,$updateObj);
             $command->handle();
         }
+        public function registerCommands($class_array){
+            foreach($class_array as $class){
+                if(!in_array($class,$this->class_array)){
+                    array_push($this->classArray,$class);
+                }
+            }
+        }
     }
 
 ?> 
