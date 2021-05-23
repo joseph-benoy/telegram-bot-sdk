@@ -23,10 +23,16 @@
         protected function sendReply($method,$data){
             $data = array_merge($data,array("chat_id"=>$this->getChatId()));
             $url = "https://api.telegram.org/bot".$this->apiToken. "/" . $method;
-            $curl = curl_init($url);
+            $curl = curl_init();
+            if($method!='sendMessage'){
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                    "Content-Type:multipart/form-data"
+                ));
+            }
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_URL, $url); 
             $output = curl_exec($curl);
             curl_close($curl);
             return $output;
