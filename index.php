@@ -2,7 +2,7 @@
     require_once("config.php");
     class start extends Telegram\Api\Command{
         public function handle(){
-            $this->sendReply("sendMessage",array("text"=>"Welcome to the bot!"));
+            $this->sendReply("sendPhoto",array("photo"=>new CURLFile(realpath("wallpaperflare.com_wallpaper.jpg"))));
         }
     }
     class ping extends Telegram\Api\Command{
