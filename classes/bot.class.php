@@ -1,5 +1,5 @@
 <?php
-    namespace Telegram;
+    namespace \Telegram\Api;
 /**
  * [Base class for the bot sdk]
  */
