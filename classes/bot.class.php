@@ -25,7 +25,7 @@
          * 
          * @return stdClass
          */
-        public function filterUpdate($updateObj):\stdClass{
+        protected function filterUpdate($updateObj):\stdClass{
             if(property_exists($updateObj,'callback_query')){
                 $filterObj = new \stdClass;
                 $filterObj->chatId = $updateObj->callback_query->from->id;
@@ -50,7 +50,7 @@
          * 
          * @return [type]
          */
-        public function getCommandName($updateObj){
+        protected function getCommandName($updateObj){
             $data = ltrim($updateObj->message->text,"/");
             if(in_array($data,$this->classArray)){
                 return $data;
@@ -71,10 +71,15 @@
             }
             elseif(property_exists($filterObj,'commandName')){
                 //execute as registered command
+                $this->executeCommand($filterObj,$updateObj);
             }
             else{
                 //execute as random input
             }
+        }
+        protected function executeCommand($filterObj,$updateObj){
+            $command = new $filterObj->commandName($updateObj);
+            $command->handle();
         }
     }
 
