@@ -27,7 +27,8 @@
                 return $filterObj;
             }
             elseif($this->isCommand($updateObj->message->text)){
-                if($cmd = $this->getCommandName($updateObj->message->text)!=null){
+                $cmd = $this->getCommandName($updateObj->message->text);
+                if($cmd!=null){
                     $filterObj = new \stdClass;
                     $filterObj->chatId = $updateObj->message->chat->id;
                     $filterObj->commandName = $cmd;
@@ -64,7 +65,7 @@
             elseif(property_exists($filterObj,'commandName')){
                 //execute as registered command
                 if($filterObj->commandName==""){
-                    $this->sendError($filterObj,"Invalid Command");// send error message because command is not registered
+//                    $this->sendError($filterObj,"Invalid Command");// send error message because command is not registered
                 }
                 else{
                     $this->executeCommand($filterObj,$updateObj);
@@ -75,12 +76,13 @@
             }
         }
         protected function executeCommand($filterObj,$updateObj):void{
-            $command = new $filterObj->commandName($this->apiToken,$updateObj);
+            $class = $filterObj->commandName;
+            $command = new $class($this->apiToken,$updateObj);
             $command->handle();
         }
         public function registerCommands($class_array){
             foreach($class_array as $class){
-                if(!in_array($class,$this->class_array)){
+                if(!in_array($class,$this->classArray)){
                     array_push($this->classArray,$class);
                 }
             }
