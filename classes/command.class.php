@@ -80,7 +80,7 @@
                 $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"voice"=>new \CURLFile(realpath($path)));
             }
             else{
-                $data = array("chat_id"=>$this->getChatId(),"voice"=>new \CURLFile(realpath($path)));
+                $data = array("chat_id"=>$this->getsetCommandSessionhatId(),"voice"=>new \CURLFile(realpath($path)));
             }
             $this->sendReply("sendVoice",$data);
         }
@@ -100,11 +100,11 @@
             $data = array("chat_id"=>$this->getChatId(),"text"=>$text,"reply_markup"=>$keyboard);
             $this->sendReply('sendMessage',$data);
         }
-        protected function setCommandSession($chatId,$commandName,$sessionName){
+        protected function setCommandSession($sessionName){
             $obj = new \stdClass;
-            $obj->commandName = $commandName;
+            $obj->commandName = get_class($this);
             $obj->sessionName = $sessionName;
-            apcu_add($chatId,json_encode($obj));
+            apcu_add($this->getChatId(),json_encode($obj));
         }
         protected function deleteCommandSession($chatId){
             apcu_delete($chatId);
