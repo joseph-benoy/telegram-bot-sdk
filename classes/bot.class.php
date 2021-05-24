@@ -93,21 +93,20 @@
             }
         }
         protected function executeCommand($filterObj,$updateObj):void{
-            $class = $filterObj->commandName;
-            $command = new $class($this->apiToken,$updateObj);
-            $command->handle();
+            if(!apcu_exists($filterObj->chatId)){
+                $class = $filterObj->commandName;
+                $command = new $class($this->apiToken,$updateObj);
+                $command->handle();
+            }
+            else{
+                error_log("@@@@@@@@@@@@@@@@@",0);
+//                $this->sendError($filterObj,"Invalid input");
+            }
         }
         public function registerCommands($class_array){
             foreach($class_array as $class){
                 if(!in_array($class,$this->classArray)){
                     array_push($this->classArray,$class);
-                }
-            }
-        }
-        public function registerCallbackQueries($callbackQueryArray){
-            foreach($callbackQueryArray as $query){
-                if(!in_array($query,$this->callbackQueryArray)){
-                    array_push($this->callbackQueryArray,$query);
                 }
             }
         }
