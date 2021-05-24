@@ -141,7 +141,7 @@
             if($commandSessionObj!=""){
                 $class = json_decode($commandSessionObj)->commandName;
                 $command = new $class($this->apiToken,$updateObj);
-                $command->handleCommandSession($commandSessionObj);
+                $command->handleCommandSession($commandSessionObj,$filterObj->queryData);
             }
         }
     }
