@@ -4,19 +4,12 @@
         protected $apiToken;
         protected $classArray=[];
         protected $callbackQueryArray=[];
-        public function __construct($token,$classArray=null,$callbackQueryArray=null){
+        public function __construct($token,$classArray=null){
             $this->apiToken = $token;
             if($classArray!=null){
                 foreach($classArray as $class){
                     if(!in_array($class,$this->classArray)){
                         array_push($this->classArray,$class);
-                    }
-                }
-            }
-            if($callbackQueryArray!=null){
-                foreach($callbackQueryArray as $query){
-                    if(!in_array($query,$this->callbackQueryArray)){
-                        array_push($this->callbackQueryArray,$query);
                     }
                 }
             }
@@ -53,7 +46,8 @@
             }
             else{
                 $filterObj = new \StdClass;
-                $filterObj->chatId = $updateObj->message->chat->id;
+                $filterObj->chatId = $updateObj->message->chat->id;\
+                $filterObj->text = $updateObj->message->text;
                 return $filterObj;
             }
         }
@@ -89,6 +83,7 @@
             }
             else{
                 //execute as random input
+                $this->routeRandomInput($filterObj,$updateObj);
                 error_log("RRRRRRRRRRRRRRRRRRRRRRRR",0);
             }
         }
@@ -122,7 +117,15 @@
             if($commandSessionObj!=""){
                 $class = $commandSessionObj->commandName;
                 $command = new $class($this->apiToken,$updateObj);
-                $command->handle($commandSessionObj,$filterObj->queryData);
+                $command->handle(null,$commandSessionObj,$filterObj->queryData);
+            }
+        }
+        protected function routeRandomInput($filterObj,$updateObj){
+            $commandSessionObj = json_decode($this->getCommandSession($filterObj->chatId));
+            if($commandSessionObj!=""){
+                $class = $commandSessionObj->commandName;
+                $command = new $class($this->apiToken,$updateObj);
+                $command->handle($filterObj->text,$commandSessionObj,null);
             }
         }
     }

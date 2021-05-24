@@ -6,7 +6,7 @@
         }
     }
     class ping extends Telegram\Api\Command{
-        public function handle($commandSessionObj=null,$queryData=null){
+        public function handle($randomMessage=null,$commandSessionObj=null,$queryData=null){
             if($commandSessionObj==null){
                 $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"Hello2","callback_data"=>"@@@@@@@@"]]]);
                 $this->replyInlineKeyboardMessage("Welcome to the bot!",$keyboard);
@@ -23,7 +23,13 @@
             if($commandSessionObj->sessionName=="thirdSession"){
                 $this->replyMessage("33333333333333{$commandSessionObj->sessionName} : {$queryData}");
                 $this->replyMessage("ALL SESSIONS COMPLETED!");
+                $this->setCommandSession("fourthSession");
+                return;
+            }
+            if($commandSessionObj->sessionName=="fourthSession"){
+                $this->replyMessage("Your maessage is".$randomMessage);
                 $this->deleteCommandSession();
+                $this->replyMessage("Session Over!");
                 return;
             }
         }
