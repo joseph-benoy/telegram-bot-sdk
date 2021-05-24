@@ -10,10 +10,16 @@
         public function __construct($apiToken,$updateObj){
             $this->updateObj = $updateObj;
             $this->apiToken = $apiToken;
+            $this->setCommandSession("FIRST_SESSION");
         }
         abstract public function handle();
         public function getChatId():string{
-            return $this->updateObj->message->chat->id;
+            if(property_exists($this->updateObj,"message")){
+                return $this->updateObj->message->chat->id;
+            }
+            else{
+                return $this->updateObj->callback_query->from->id;
+            }
         }
         public function getText(){
             return $this->updateObj->message->text;
@@ -104,7 +110,12 @@
             $obj = new \stdClass;
             $obj->commandName = get_class($this);
             $obj->sessionName = $sessionName;
-            apcu_add($this->getChatId(),json_encode($obj));
+            if(!apcu_exists($this->getChatId())){
+                apcu_add($this->getChatId(),json_encode($obj));
+            }
+            else{
+                apcu_store($this->getChatId(),json_encode($obj));
+            }
         }
         protected function deleteCommandSession(){
             apcu_delete($this->getChatId());

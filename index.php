@@ -7,24 +7,26 @@
     }
     class ping extends Telegram\Api\Command{
         public function handle($commandSessionObj=null,$queryData=null){
-            if($commandSessionObj==null&&$queryData==null){
-                $this->replyChatAction(self::TYPING);
+            if($commandSessionObj=="FIRST_SESSION"){
+                $this->replyMessage("111111111");
+                $this->replyChatAction(self::TYPING_ACTION);
                 $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"Hello2","callback_data"=>"@@@@@@@@"]]]);
                 $this->replyInlineKeyboardMessage("Welcome to the bot!",$keyboard);
                 $this->setCommandSession("secondSession");
-                return true;
+                return;
             }
             if($commandSessionObj->sessionName=="secondSession"){
-                $this->replyMessage("{$commandSessionObj->sessionName} : {$queryData}");
-                $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"%%%%","callback_data"=>"%%%%%%%%%%%%%"]]]);
+                $this->replyMessage("222222222222222222");
+                $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"second_session_hello","callback_data"=>"%%%%%%%%%%%%%%%%%"]]]);
                 $this->replyInlineKeyboardMessage("Welcome to the bot!",$keyboard);
                 $this->setCommandSession("thirdSession");
-                return true;
+                return;
             }
             if($commandSessionObj->sessionName=="thirdSession"){
-                $this->replyMessage("{$commandSessionObj->sessionName} : {$queryData}");
+                $this->replyMessage("33333333333333{$commandSessionObj->sessionName} : {$queryData}");
                 $this->replyMessage("ALL SESSIONS COMPLETED!");
                 $this->deleteCommandSession();
+                return;
             }
         }
     }

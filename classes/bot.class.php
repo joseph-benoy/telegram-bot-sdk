@@ -29,29 +29,12 @@
                 return false;
             }
         }
-        protected function getQueryName($data){
-            if(in_array($data,$this->callbackQueryArray)){
-                return $data;
-            }
-            else{
-                return null;
-            }
-        }
         protected function filterUpdate($updateObj):\stdClass{
             if(property_exists($updateObj,'callback_query')){
-                $queryName = $this->getQueryName($updateObj->callback_query->data);
-                if($queryName!=null){
                     $filterObj = new \stdClass;
                     $filterObj->chatId = $updateObj->callback_query->from->id;
-                    $filterObj->queryData =$queryName;
+                    $filterObj->queryData =$updateObj->callback_query->data;
                     return $filterObj;
-                }
-                else{
-                    $filterObj = new \stdClass;
-                    $filterObj->chatId = $updateObj->callback_query->from->id;
-                    $filterObj->queryData = null;
-                    return $filterObj;
-                }
             }
             elseif($this->isCommand($updateObj->message->text)){
                 $cmd = $this->getCommandName($updateObj->message->text);
@@ -92,7 +75,6 @@
                     //$this->sendError($filterObj,"Invalid callback query");
                 }
                 else{
-                    error_log("###################",0);
                     $this->executeCallbackQuery($filterObj,$updateObj);
                 }
             }
@@ -129,19 +111,19 @@
                 }
             }
         }
-        protected getCommandSession($chatId){
+        protected function getCommandSession($chatId){
             if(apcu_exists($chatId)){
-                return apcu_key($chatId);
+                return apcu_fetch($chatId);
             }else{
                 return "";
             }
         }
         protected function executeCallbackQuery($filterObj,$updateObj):void{
-            $commandSessionObj = $this->getCommandSession($filterObj->chatId);
+            $commandSessionObj = json_decode($this->getCommandSession($filterObj->chatId));
             if($commandSessionObj!=""){
-                $class = json_decode($commandSessionObj)->commandName;
+                $class = $commandSessionObj->commandName;
                 $command = new $class($this->apiToken,$updateObj);
-                $command->handleCommandSession($commandSessionObj,$filterObj->queryData);
+                $command->handle($commandSessionObj,$filterObj->queryData);
             }
         }
     }
