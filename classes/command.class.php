@@ -1,6 +1,10 @@
 <?php
     namespace Telegram\Api;
     abstract class Command{
+        const TYPING_ACTION = "typing";
+        const UPLOAD_PHOTO_ACTION = "upload_photo";
+        const RECORDING_AUDIO = "record_voice";
+        const RECORDING_VIDEO = "record_video";
         protected $updateObj;
         protected $apiToken;
         public function __construct($apiToken,$updateObj){
@@ -70,5 +74,20 @@
             }
             $this->sendReply("sendAudio",$data);
         }
+        protected function replyVoice($path,$caption=null){
+            $data=null;
+            if($caption!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"voice"=>new \CURLFile(realpath($path)));
+            }
+            else{
+                $data = array("chat_id"=>$this->getChatId(),"voice"=>new \CURLFile(realpath($path)));
+            }
+            $this->sendReply("sendVoice",$data);
+        }
+        protected function replyChatAction($action="typing"){
+            $data = array("chat_id"=>$this->getChatId(),"action"=>$action);
+            $this->sendReply("sendChatAction",$data);
+        }
+        protected function createInlineKeyboard()
     }
 ?>
