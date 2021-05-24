@@ -106,9 +106,8 @@
             $obj->sessionName = $sessionName;
             apcu_add($this->getChatId(),json_encode($obj));
         }
-        protected function deleteCommandSession($chatId){
-            apcu_delete($chatId);
+        protected function deleteCommandSession(){
+            apcu_delete($this->getChatId());
         }
-        abstract public function handleCommandSession($commandSessionObj,$queryData):void;
     }
 ?>
