@@ -100,5 +100,12 @@
             $data = array("chat_id"=>$this->getChatId(),"text"=>$text,"reply_markup"=>$keyboard);
             $this->sendReply('sendMessage',$data);
         }
+        protected function setCommandSession($chatId,$commandName,$sessionName){
+            $obj = new \stdClass;
+            $obj->commandName = $commandName;
+            $obj->sessionName = $sessionName;
+            apcu_add($chatId,json_encode($obj));
+        }
+        abstract public function handleCommandSession($commandSessionObj):void;
     }
 ?>

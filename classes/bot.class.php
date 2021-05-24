@@ -129,8 +129,20 @@
                 }
             }
         }
+        protected getCommandSession($chatId){
+            if(apcu_exists($chatId)){
+                return apcu_key($chatId);
+            }else{
+                return "";
+            }
+        }
         protected function executeCallbackQuery($filterObj,$updateObj):void{
-            
+            $commandSessionObj = $this->getCommandSession($filterObj->chatId);
+            if($commandSessionObj!=""){
+                $class = json_decode($commandSessionObj)->commandName;
+                $command = new $class($this->apiToken,$updateObj);
+                $command->handleCommandSession($commandSessionObj);
+            }
         }
     }
 
