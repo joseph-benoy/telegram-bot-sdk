@@ -10,7 +10,6 @@
         public function __construct($apiToken,$updateObj){
             $this->updateObj = $updateObj;
             $this->apiToken = $apiToken;
-            $this->setCommandSession("FIRST_SESSION");
         }
         abstract public function handle();
         public function getChatId():string{

@@ -7,9 +7,7 @@
     }
     class ping extends Telegram\Api\Command{
         public function handle($commandSessionObj=null,$queryData=null){
-            if($commandSessionObj=="FIRST_SESSION"){
-                $this->replyMessage("111111111");
-                $this->replyChatAction(self::TYPING_ACTION);
+            if($commandSessionObj==null){
                 $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"Hello2","callback_data"=>"@@@@@@@@"]]]);
                 $this->replyInlineKeyboardMessage("Welcome to the bot!",$keyboard);
                 $this->setCommandSession("secondSession");
