@@ -44,7 +44,7 @@
             $data = array("chat_id"=>$this->getChatId(),"text"=>$text);
             $this->sendReply('sendMessage',$data);
         }
-        protected function replyPhoto($path,$caption=null){
+        protected function replyPhoto($path,$caption=null,$keyboard=null){
             $data=null;
             if($caption!=null){
                 $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"photo"=>new \CURLFile(realpath($path)));
@@ -88,6 +88,17 @@
             $data = array("chat_id"=>$this->getChatId(),"action"=>$action);
             $this->sendReply("sendChatAction",$data);
         }
-        protected function createInlineKeyboard()
+        protected function createInlineKeyboard($buttonArray){
+            $keyboard = [
+                'inline_keyboard' => [
+                    ...$buttonArray
+                ]
+            ];
+            return json_encode($keyboard);
+        }
+        protected function replyInlineKeyboardMessage($text,$keyboard){
+            $data = array("chat_id"=>$this->getChatId(),"text"=>$text,"reply_markup"=>$keyboard);
+            $this->sendReply('sendMessage',$data);
+        }
     }
 ?>

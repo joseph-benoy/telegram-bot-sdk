@@ -3,11 +3,21 @@
     class Bot{
         protected $apiToken;
         protected $classArray=[];
-        public function __construct($token,$classArray=null){
+        protected $callbackQueryArray=[];
+        public function __construct($token,$classArray=null,$callbackQueryArray=null){
             $this->apiToken = $token;
             if($classArray!=null){
                 foreach($classArray as $class){
-                    array_push($this->classArray,$class);
+                    if(!in_array($class,$this->classArray)){
+                        array_push($this->classArray,$class);
+                    }
+                }
+            }
+            if($callbackQueryArray!=null){
+                foreach($callbackQueryArray as $query){
+                    if(!in_array($query,$this->callbackQueryArray)){
+                        array_push($this->callbackQueryArray,$query);
+                    }
                 }
             }
         }
@@ -61,6 +71,8 @@
             $filterObj = $this->filterUpdate($updateObj);
             if(property_exists($filterObj,'queryData')){
                 //execute as callback_query
+                error_log("###################",0);
+                $this->executeCallbackQuery($filterObj,$updateObj);
             }
             elseif(property_exists($filterObj,'commandName')){
                 //execute as registered command
@@ -73,6 +85,7 @@
             }
             else{
                 //execute as random input
+                error_log("RRRRRRRRRRRRRRRRRRRRRRRR",0);
             }
         }
         protected function executeCommand($filterObj,$updateObj):void{
@@ -86,6 +99,9 @@
                     array_push($this->classArray,$class);
                 }
             }
+        }
+        protected function executeCallbackQuery($filterObj,$updateObj):void{
+
         }
     }
 
