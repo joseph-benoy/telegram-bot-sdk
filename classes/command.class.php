@@ -41,8 +41,34 @@
             $this->sendReply('sendMessage',$data);
         }
         protected function replyPhoto($path){
-            $data = array("chat_id"=>$this->getChatId(),"photo"=>new \CURLFile(realpath($path)));
-            $this->sendReply("sendPhoto",$data);
+            $data=null;
+            if($caption!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"photo"=>new \CURLFile(realpath($path)));
+            }
+            else{
+                $data = array("chat_id"=>$this->getChatId(),"photo"=>new \CURLFile(realpath($path)));
+            }
+            $this->sendReply('sendPhoto',$data);
+        }
+        protected function replyDoc($path){
+            $data=null;
+            if($caption!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"document"=>new \CURLFile(realpath($path)));
+            }
+            else{
+                $data = array("chat_id"=>$this->getChatId(),"document"=>new \CURLFile(realpath($path)));
+            }
+            $this->sendReply('sendDocument',$data);
+        }
+        protected function replyAudio($path,$caption=null){
+            $data=null;
+            if($caption!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"audio"=>new \CURLFile(realpath($path)));
+            }
+            else{
+                $data = array("chat_id"=>$this->getChatId(),"audio"=>new \CURLFile(realpath($path)));
+            }
+            $this->sendReply("sendAudio",$data);
         }
     }
 ?>
