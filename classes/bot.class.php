@@ -29,12 +29,29 @@
                 return false;
             }
         }
+        protected function getQueryName($data){
+            if(in_array($data,$this->callbackQueryArray)){
+                return $data;
+            }
+            else{
+                return null;
+            }
+        }
         protected function filterUpdate($updateObj):\stdClass{
             if(property_exists($updateObj,'callback_query')){
-                $filterObj = new \stdClass;
-                $filterObj->chatId = $updateObj->callback_query->from->id;
-                $filterObj->queryData = $updateObj->callback_query->data;
-                return $filterObj;
+                $queryName = $this->getQueryName($updateObj->callback_query->data);
+                if($queryName!=null){
+                    $filterObj = new \stdClass;
+                    $filterObj->chatId = $updateObj->callback_query->from->id;
+                    $filterObj->queryData =$queryName;
+                    return $filterObj;
+                }
+                else{
+                    $filterObj = new \stdClass;
+                    $filterObj->chatId = $updateObj->callback_query->from->id;
+                    $filterObj->queryData = null;
+                    return $filterObj;
+                }
             }
             elseif($this->isCommand($updateObj->message->text)){
                 $cmd = $this->getCommandName($updateObj->message->text);
@@ -71,8 +88,13 @@
             $filterObj = $this->filterUpdate($updateObj);
             if(property_exists($filterObj,'queryData')){
                 //execute as callback_query
-                error_log("###################",0);
-                $this->executeCallbackQuery($filterObj,$updateObj);
+                if($filterObj->queryData==""){
+                    //$this->sendError($filterObj,"Invalid callback query");
+                }
+                else{
+                    error_log("###################",0);
+                    $this->executeCallbackQuery($filterObj,$updateObj);
+                }
             }
             elseif(property_exists($filterObj,'commandName')){
                 //execute as registered command
@@ -97,6 +119,13 @@
             foreach($class_array as $class){
                 if(!in_array($class,$this->classArray)){
                     array_push($this->classArray,$class);
+                }
+            }
+        }
+        public function registerCallbackQueries($callbackQueryArray){
+            foreach($callbackQueryArray as $query){
+                if(!in_array($query,$this->callbackQueryArray)){
+                    array_push($this->callbackQueryArray,$query);
                 }
             }
         }
