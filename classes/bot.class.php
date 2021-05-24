@@ -46,7 +46,7 @@
             }
             else{
                 $filterObj = new \StdClass;
-                $filterObj->chatId = $updateObj->message->chat->id;\
+                $filterObj->chatId = $updateObj->message->chat->id;
                 $filterObj->text = $updateObj->message->text;
                 return $filterObj;
             }
@@ -84,7 +84,6 @@
             else{
                 //execute as random input
                 $this->routeRandomInput($filterObj,$updateObj);
-                error_log("RRRRRRRRRRRRRRRRRRRRRRRR",0);
             }
         }
         protected function executeCommand($filterObj,$updateObj):void{

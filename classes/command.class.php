@@ -11,7 +11,7 @@
             $this->updateObj = $updateObj;
             $this->apiToken = $apiToken;
         }
-        abstract public function handle($randomData=null,$commandSessionObj=null,$queryData=null);
+        abstract public function handle();
         public function getChatId():string{
             if(property_exists($this->updateObj,"message")){
                 return $this->updateObj->message->chat->id;
