@@ -21,7 +21,6 @@
             return  $this->updateObj->from->first_name." ".$this->updateObj->from->last_name;
         }
         protected function sendReply($method,$data){
-            $data = array_merge($data,array("chat_id"=>$this->getChatId()));
             $url = "https://api.telegram.org/bot".$this->apiToken. "/" . $method;
             $curl = curl_init();
             if($method!='sendMessage'){
@@ -36,6 +35,14 @@
             $output = curl_exec($curl);
             curl_close($curl);
             return $output;
+        }
+        protected function replyMessage($text){
+            $data = array("chat_id"=>$this->getChatId(),"text"=>$text);
+            $this->sendReply('sendMessage',$data);
+        }
+        protected function replyPhoto($path){
+            $data = array("chat_id"=>$this->getChatId(),"photo"=>new \CURLFile(realpath($path)));
+            $this->sendReply("sendPhoto",$data);
         }
     }
 ?>
