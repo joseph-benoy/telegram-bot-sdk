@@ -130,7 +130,9 @@
             }
         }
         protected function executeCallbackQuery($filterObj,$updateObj):void{
-
+            $class = $filterObj->queryData;
+            $query = new $class($this->apiToken,$updateObj);
+            $query->handle();
         }
     }
 
