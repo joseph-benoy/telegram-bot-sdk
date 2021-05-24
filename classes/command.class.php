@@ -40,7 +40,7 @@
             $data = array("chat_id"=>$this->getChatId(),"text"=>$text);
             $this->sendReply('sendMessage',$data);
         }
-        protected function replyPhoto($path){
+        protected function replyPhoto($path,$caption=null){
             $data=null;
             if($caption!=null){
                 $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"photo"=>new \CURLFile(realpath($path)));
@@ -50,7 +50,7 @@
             }
             $this->sendReply('sendPhoto',$data);
         }
-        protected function replyDoc($path){
+        protected function replyDoc($path,$caption=null){
             $data=null;
             if($caption!=null){
                 $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"document"=>new \CURLFile(realpath($path)));
