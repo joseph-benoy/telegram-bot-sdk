@@ -1,8 +1,8 @@
 <?php
-    Telegram\Api;
+    namespace Telegram\Api;
     class Action{
         protected $apiToken;
-        protected function sendReply($method,$data){
+        public function sendReply($method,$data){
             $url = "https://api.telegram.org/bot".$this->apiToken. "/" . $method;
             $curl = curl_init();
             if($method!='sendMessage'){
@@ -41,7 +41,7 @@
                 $this->sendReply('sendPhoto',$data);
             }
         }
-        public function sendVideo($path,$thumb=null,$caption=null,$replyMarkup=null){
+        public function sendVideo($chatId,$path,$thumb=null,$caption=null,$replyMarkup=null){
             if($caption==null){
                 $caption = "";
             }
@@ -57,7 +57,7 @@
                 $this->sendReply("sendVideo",$data);
             }
         }
-        public function sendDoc($path,$caption=null,$replyMarkup=null){
+        public function sendDoc($chatId,$path,$caption=null,$replyMarkup=null){
             if($caption==null){
                 $caption = "";
             }
@@ -74,7 +74,7 @@
             $data = array("chat_id"=>$chatId,"action"=>$action);
             $this->sendReply("sendChatAction",$data);
         }
-        public function replyVoice($chatId,$path,$caption=null,$replyMarkup=null){
+        public function sendVoice($chatId,$path,$caption=null,$replyMarkup=null){
             if($caption==null){
                 $caption = "";
             }
@@ -87,7 +87,7 @@
                 $this->sendReply("sendVoice",$data);
             }
         }
-        public function replyAudio($path,$caption=null,$replyMarkup=null){
+        public function sendAudio($chatId,$path,$caption=null,$replyMarkup=null){
             if($caption==null){
                 $caption = "";
             }
