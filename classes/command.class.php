@@ -58,15 +58,18 @@
                 $this->sendReply('sendMessage',$data);
             }
         }
-        protected function replyPhoto($path,$caption=null,$keyboard=null){
-            $data=null;
-            if($caption!=null){
-                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"photo"=>new \CURLFile(realpath($path)));
+        protected function replyPhoto($path,$caption=null,$replyMarkup=null){
+            if($caption==null){
+                $caption = "";
+            }
+            if($replyMarkup!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"reply_markup"=>$replyMarkup,"photo"=>new \CURLFile(realpath($path)));
+                $this->sendReply('sendPhoto',$data);
             }
             else{
-                $data = array("chat_id"=>$this->getChatId(),"photo"=>new \CURLFile(realpath($path)));
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"photo"=>new \CURLFile(realpath($path)));
+                $this->sendReply('sendPhoto',$data);
             }
-            $this->sendReply('sendPhoto',$data);
         }
         protected function replyDoc($path,$caption=null){
             $data=null;
@@ -78,15 +81,18 @@
             }
             $this->sendReply('sendDocument',$data);
         }
-        protected function replyAudio($path,$caption=null){
-            $data=null;
-            if($caption!=null){
-                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"audio"=>new \CURLFile(realpath($path)));
+        protected function replyAudio($path,$caption=null,$replyMarkup=null){
+            if($caption==null){
+                $caption = "";
+            }
+            if($replyMarkup!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"reply_markup"=>$replyMarkup,"audio"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendAudio",$data);
             }
             else{
                 $data = array("chat_id"=>$this->getChatId(),"audio"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendAudio",$data);
             }
-            $this->sendReply("sendAudio",$data);
         }
         protected function replyVoice($path,$caption=null){
             $data=null;
