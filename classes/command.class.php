@@ -94,15 +94,18 @@
                 $this->sendReply("sendAudio",$data);
             }
         }
-        protected function replyVoice($path,$caption=null){
-            $data=null;
-            if($caption!=null){
-                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"voice"=>new \CURLFile(realpath($path)));
+        protected function replyVoice($path,$caption=null,$replyMarkup=null){
+            if($caption==null){
+                $caption = "";
+            }
+            if($replyMarkup!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"reply_markup"=>$replyMarkup,"voice"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendAudio",$data);
             }
             else{
-                $data = array("chat_id"=>$this->getsetCommandSessionhatId(),"voice"=>new \CURLFile(realpath($path)));
-            }
-            $this->sendReply("sendVoice",$data);
+                $data = array("chat_id"=>$this->getChatId(),"voice"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendVoice",$data);
+            });
         }
         protected function replyChatAction($action="typing"){
             $data = array("chat_id"=>$this->getChatId(),"action"=>$action);
