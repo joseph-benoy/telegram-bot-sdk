@@ -7,12 +7,17 @@
     }
     class ping extends Telegram\Api\Command{
         public function handle($randomMessage=null,$commandSessionObj=null,$queryData=null){
-            $this->replyMessage("!!!!!!!!!!!");
 
-                $obj = new Telegram\component\InlineKeyboard();
-                $obj->addRow([["text"=>"@@@@","callback_data"=>"@@@@"],["text"=>"google","url"=>"https://www.google.com"]]);
-                $replyMarkup = $obj->getMarkup();
-            $result = $this->sendReply("sendMessage",["chat_id"=>$this->getChatId(),"reply_markup"=>$replyMarkup,"text"=>"$$$$$$$$$$"]);
+            $obj = new Telegram\component\ReplyKeyboard();
+            $obj->addRow([["text"=>"@@@@","callback_data"=>"@@@@"],["text"=>"google","callback_data"=>"######"]]);
+            $result = $this->replyMessage("HHHHH",$obj->getMarkup());
+        
+        
+        
+        
+        
+        
+        
             error_log("@@@@@@@@@@ = {$result}",0);
         }
     }
