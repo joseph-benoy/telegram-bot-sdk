@@ -7,31 +7,13 @@
     }
     class ping extends Telegram\Api\Command{
         public function handle($randomMessage=null,$commandSessionObj=null,$queryData=null){
-            if($commandSessionObj==null){
-                $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"Hello2","callback_data"=>"@@@@@@@@"]]]);
-                $this->replyInlineKeyboardMessage("Welcome to the bot!",$keyboard);
-                $this->setCommandSession("secondSession");
-                return;
-            }
-            if($commandSessionObj->sessionName=="secondSession"){
-                $this->replyMessage("222222222222222222");
-                $keyboard = $this->createInlineKeyboard([[["text"=>"Click me","url"=>"https://www.google.com"],["text"=>"Hello","callback_data"=>"callback_data0"]],[["text"=>"second_session_hello","callback_data"=>"%%%%%%%%%%%%%%%%%"]]]);
-                $this->replyInlineKeyboardMessage("Welcome to the bot!",$keyboard);
-                $this->setCommandSession("thirdSession");
-                return;
-            }
-            if($commandSessionObj->sessionName=="thirdSession"){
-                $this->replyMessage("33333333333333{$commandSessionObj->sessionName} : {$queryData}");
-                $this->replyMessage("ALL SESSIONS COMPLETED!");
-                $this->setCommandSession("fourthSession");
-                return;
-            }
-            if($commandSessionObj->sessionName=="fourthSession"){
-                $this->replyMessage("Your maessage is".$randomMessage);
-                $this->deleteCommandSession();
-                $this->replyMessage("Session Over!");
-                return;
-            }
+            $this->replyMessage("!!!!!!!!!!!");
+
+                $obj = new Telegram\component\InlineKeyboard();
+                $obj->addRow([["text"=>"@@@@","callback_data"=>"@@@@"],["text"=>"google","url"=>"https://www.google.com"]]);
+                $replyMarkup = $obj->getMarkup();
+            $result = $this->sendReply("sendMessage",["chat_id"=>$this->getChatId(),"reply_markup"=>$replyMarkup,"text"=>"$$$$$$$$$$"]);
+            error_log("@@@@@@@@@@ = {$result}",0);
         }
     }
     $bot = new \Telegram\Api\Bot('1755386616:AAFH3PIzoumgJn1nOEy-i_YV8evDUUWq0qk');

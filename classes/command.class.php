@@ -101,6 +101,14 @@
             ];
             return json_encode($keyboard);
         }
+        protected function createReplyKeyboard($buttonArray){
+            $keyboard = [
+                'keyboard'=>[
+                    ...$buttonArray
+                ]
+            ];
+            return json_encode($keyboard);
+        }
         protected function replyInlineKeyboardMessage($text,$keyboard){
             $data = array("chat_id"=>$this->getChatId(),"text"=>$text,"reply_markup"=>$keyboard);
             $this->sendReply('sendMessage',$data);
