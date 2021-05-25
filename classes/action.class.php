@@ -2,9 +2,6 @@
     Telegram\Api;
     class Action{
         protected $apiToken;
-        public function __construct($apiToken){
-            $this->apiToken = $apiToken;
-        }
         protected function sendReply($method,$data){
             $url = "https://api.telegram.org/bot".$this->apiToken. "/" . $method;
             $curl = curl_init();
@@ -88,6 +85,19 @@
             else{
                 $data = array("chat_id"=>$chatId,"voice"=>new \CURLFile(realpath($path)));
                 $this->sendReply("sendVoice",$data);
+            }
+        }
+        public function replyAudio($path,$caption=null,$replyMarkup=null){
+            if($caption==null){
+                $caption = "";
+            }
+            if($replyMarkup!=null){
+                $data = array("chat_id"=>$chatId,'caption'=>$caption,"reply_markup"=>$replyMarkup,"audio"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendAudio",$data);
+            }
+            else{
+                $data = array("chat_id"=>$chatId,"audio"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendAudio",$data);
             }
         }
     }

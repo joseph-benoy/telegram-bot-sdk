@@ -1,6 +1,6 @@
 <?php
     namespace Telegram\Api;
-    abstract class Command{
+    abstract class Command extends Action{
         protected $updateObj;
         protected $apiToken;
         public function __construct($apiToken,$updateObj){

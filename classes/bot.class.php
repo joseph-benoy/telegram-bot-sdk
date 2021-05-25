@@ -1,7 +1,6 @@
 <?php
     namespace Telegram\Api;
-    class Bot{
-        protected $apiToken;
+    class Bot extends Action{
         protected $classArray=[];
         protected $callbackQueryArray=[];
         public function __construct($token,$classArray=null){
