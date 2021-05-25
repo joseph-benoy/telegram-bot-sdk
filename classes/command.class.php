@@ -100,24 +100,16 @@
             }
             if($replyMarkup!=null){
                 $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"reply_markup"=>$replyMarkup,"voice"=>new \CURLFile(realpath($path)));
-                $this->sendReply("sendAudio",$data);
+                $this->sendReply("sendVoice",$data);
             }
             else{
                 $data = array("chat_id"=>$this->getChatId(),"voice"=>new \CURLFile(realpath($path)));
                 $this->sendReply("sendVoice",$data);
-            });
+            }
         }
         protected function replyChatAction($action="typing"){
             $data = array("chat_id"=>$this->getChatId(),"action"=>$action);
             $this->sendReply("sendChatAction",$data);
-        }
-        protected function createInlineKeyboard($buttonArray){
-            $keyboard = [
-                'inline_keyboard' => [
-                    ...$buttonArray
-                ]
-            ];
-            return json_encode($keyboard);
         }
         protected function createReplyKeyboard($buttonArray){
             $keyboard = [
