@@ -71,15 +71,18 @@
                 $this->sendReply('sendPhoto',$data);
             }
         }
-        protected function replyDoc($path,$caption=null){
-            $data=null;
-            if($caption!=null){
-                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"document"=>new \CURLFile(realpath($path)));
+        protected function replyDoc($path,$caption=null,$replyMarkup=null){
+            if($caption==null){
+                $caption = "";
+            }
+            if($replyMarkup!=null){
+                $data = array("chat_id"=>$this->getChatId(),'caption'=>$caption,"reply_markup"=>$replyMarkup,"document"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendDocument",$data);
             }
             else{
                 $data = array("chat_id"=>$this->getChatId(),"document"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendDocument",$data);
             }
-            $this->sendReply('sendDocument',$data);
         }
         protected function replyAudio($path,$caption=null,$replyMarkup=null){
             if($caption==null){
@@ -111,17 +114,21 @@
             $data = array("chat_id"=>$this->getChatId(),"action"=>$action);
             $this->sendReply("sendChatAction",$data);
         }
-        protected function createReplyKeyboard($buttonArray){
-            $keyboard = [
-                'keyboard'=>[
-                    ...$buttonArray
-                ]
-            ];
-            return json_encode($keyboard);
-        }
-        protected function replyInlineKeyboardMessage($text,$keyboard){
-            $data = array("chat_id"=>$this->getChatId(),"text"=>$text,"reply_markup"=>$keyboard);
-            $this->sendReply('sendMessage',$data);
+        protected function replyVideo($path,$thumb=null,$caption=null,$replyMarkup=null){
+            if($caption==null){
+                $caption = "";
+            }
+            if($thumb==null){
+                $thumb = "";
+            }
+            if($replyMarkup!=null){
+                $data = array("chat_id"=>$this->getChatId(),"thumb"=>$thumb,'caption'=>$caption,"reply_markup"=>$replyMarkup,"video"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendVideo",$data);
+            }
+            else{
+                $data = array("chat_id"=>$this->getChatId(),"thumb"=>$thumb,'caption'=>$caption,"video"=>new \CURLFile(realpath($path)));
+                $this->sendReply("sendVideo",$data);
+            }
         }
         protected function setCommandSession($sessionName){
             $obj = new \stdClass;

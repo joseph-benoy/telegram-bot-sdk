@@ -10,7 +10,7 @@
 
             $obj = new Telegram\component\InlineKeyboard();
             $obj->addRow([["text"=>"@@@@","callback_data"=>"@@@@"],["text"=>"google","callback_data"=>"######"]]);
-            $result = $this->replyVoice("audio_2021-05-25_14-46-18.ogg",null,$obj->getMarkup());
+            $result = $this->replyVideo("20210525_150149.mp4","light-sign-typography-lighting.jpg","caption",$obj->getMarkup());
         
         
         
