@@ -1,5 +1,5 @@
 <?php
-    require_once("config.php");
+    require_once("autoload.php");
     class start extends Telegram\Api\Command{
         public function handle(){
             $this->replyMessage("Welcome to the bot!");
