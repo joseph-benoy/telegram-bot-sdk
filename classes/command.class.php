@@ -1,10 +1,6 @@
 <?php
     namespace Telegram\Api;
     abstract class Command{
-        const TYPING_ACTION = "typing";
-        const UPLOAD_PHOTO_ACTION = "upload_photo";
-        const RECORDING_AUDIO = "record_voice";
-        const RECORDING_VIDEO = "record_video";
         protected $updateObj;
         protected $apiToken;
         public function __construct($apiToken,$updateObj){
@@ -29,22 +25,7 @@
         public function getFullname(){
             return  $this->updateObj->from->first_name." ".$this->updateObj->from->last_name;
         }
-        protected function sendReply($method,$data){
-            $url = "https://api.telegram.org/bot".$this->apiToken. "/" . $method;
-            $curl = curl_init();
-            if($method!='sendMessage'){
-                curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                    "Content-Type:multipart/form-data"
-                ));
-            }
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_URL, $url); 
-            $output = curl_exec($curl);
-            curl_close($curl);
-            return $output;
-        }
+
         //reply functions
 
 
@@ -130,6 +111,8 @@
                 $this->sendReply("sendVideo",$data);
             }
         }
+
+        //command Session handling functions
         protected function setCommandSession($sessionName){
             $obj = new \stdClass;
             $obj->commandName = get_class($this);
