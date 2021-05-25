@@ -3,7 +3,7 @@
 Simple telegram bot api wrapper libary written in PHP. Supports most of the methods listed in [Bot api page](https://core.telegram.org/bots/api) .
 # Usage
 
-````
+```php
 <?php
 
 require_once("autoload.php"); //autoload all classes required
@@ -31,7 +31,7 @@ $bot->registerCommands(['start','ping']); //register the command to the bot hand
 $bot->capture(); //capture the commands invoked by the client
 
 ?>
-````
+```
 
 # License
 MIT
